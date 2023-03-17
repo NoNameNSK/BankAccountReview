@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
-
 public class VerificationTest extends TestCase {
 
     String numberFull;
@@ -31,7 +30,6 @@ public class VerificationTest extends TestCase {
         numberNotValidKey = "40602810800000000025";
         numberNotFoundCur = "40602044700000000025";
         numberATS = "40602040700000000025";
-
     }
 
     @Test
@@ -40,7 +38,6 @@ public class VerificationTest extends TestCase {
         boolean actual = Verification.validLength(numberFull);
         boolean expected = true;
         assertEquals(expected, actual);
-
     }
 
     @Test
@@ -49,7 +46,6 @@ public class VerificationTest extends TestCase {
         boolean actual = Verification.validLength(numberNull);
         boolean expected = false;
         assertEquals(expected, actual);
-
     }
 
     @Test
@@ -73,7 +69,6 @@ public class VerificationTest extends TestCase {
     public void testCurAccountPath() {
         String actual = Verification.curAccountPath(numberFinUsd, pathXml);
         assertTrue(actual.contains("Доллар США"));
-
     }
 
     @Test

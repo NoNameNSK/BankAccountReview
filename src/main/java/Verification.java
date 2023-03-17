@@ -12,7 +12,7 @@ import org.w3c.dom.Document;
 public class Verification {
 
 
-    public static boolean validLength(String scanNumber) {
+    public static boolean validLength(String scanNumber) { //тут надо добавить проверку (и в тесты) что введены только цифры.
         if (scanNumber.isEmpty()) return false;
         else {
             if (scanNumber.length() == 20) return true;
