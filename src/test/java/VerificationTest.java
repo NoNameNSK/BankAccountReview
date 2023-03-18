@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 public class VerificationTest extends TestCase {
-
     String numberFull;
     String numberNull;
     String numberFinUsd;
@@ -13,21 +12,22 @@ public class VerificationTest extends TestCase {
     String numberNotFoundType;
     String numberNotFoundCur;
     String numberNotFoundCurZero;
-    String numberValidKet;
-    String numberNotValidKey;
+    String numberValidKey;
+    String numberInvalidKey;
+//    TODO переделать получение пути до ресурса так, что-бы оперировать только директориями внутри проекта
     String pathXml = "/Users/temior/IdeaProjects/BankAccount/src/main/java/resources/curcod.xml";
     String pathJson = "/Users/temior/IdeaProjects/BankAccount/src/main/java/resources/typeAccount.json";
 
     @Override
     @BeforeAll
-    protected void setUp() throws Exception {
+    protected void setUp() {
         numberFull = "40501840912312312311";
         numberNull = "";
         numberFinUsd = "40501840912312312311";
         numberNotFoundType = "00001840912312312311";
         numberNotFoundCurZero = "00001000912312312311";
-        numberValidKet = "40602810700000000025";
-        numberNotValidKey = "40602810800000000025";
+        numberValidKey = "40602810700000000025";
+        numberInvalidKey = "40602810800000000025";
         numberNotFoundCur = "40602044700000000025";
         numberATS = "40602040700000000025";
     }
@@ -35,54 +35,50 @@ public class VerificationTest extends TestCase {
     @Test
     @Tag("ValidLength")
     public void testValidLengthFull() {
-        boolean actual = Verification.validLength(numberFull);
-        boolean expected = true;
-        assertEquals(expected, actual);
+        assertTrue(Verification.validLength(numberFull));
     }
 
     @Test
     @Tag("ValidLength")
     public void testValidLengthNull() {
-        boolean actual = Verification.validLength(numberNull);
-        boolean expected = false;
-        assertEquals(expected, actual);
+        assertFalse(Verification.validLength(numberNull));
     }
 
     @Test
-    @Tag("TypeAccountPath(")
+    @Tag("TypeAccountPath")
     public void testTypeAccountPath() {
-        String actual = Verification.typeAccountPath(numberFinUsd, ParserType.getJsonFile(pathJson));
-        // assertEquals(expected, actual);
-        assertTrue(actual.contains("Финансовые организации"));
+        assertTrue(
+                Verification.typeAccountPath(numberFinUsd, ParserType.getJsonFile(pathJson))
+                        .contains("Финансовые организации"));
     }
 
     @Test
-    @Tag("TypeAccountPath(")
+    @Tag("TypeAccountPath")
     public void testTypeAccountPathNotFound() {
-        String actual = Verification.typeAccountPath(numberNotFoundType, ParserType.getJsonFile(pathJson));
-        // assertEquals(expected, actual);
-        assertTrue(actual.contains("Тип счета не найден в справочнике"));
+        assertTrue(
+                Verification.typeAccountPath(numberNotFoundType, ParserType.getJsonFile(pathJson))
+                        .contains("Тип счета не найден в справочнике"));
     }
 
     @Test
     @Tag("curAccountPath")
     public void testCurAccountPath() {
-        String actual = Verification.curAccountPath(numberFinUsd, pathXml);
-        assertTrue(actual.contains("Доллар США"));
+        assertTrue(Verification.curAccountPath(numberFinUsd, pathXml).contains("Доллар США"));
     }
 
     @Test
     @Tag("curAccountPath")
     public void testCurAccountPathNotFound() {
-        String actual = Verification.curAccountPath(numberNotFoundCurZero, pathXml);
-        assertTrue(actual.contains("валюта счета не найдена в справочнике"));
+        assertTrue(
+                Verification.curAccountPath(numberNotFoundCurZero, pathXml)
+                        .contains("валюта счета не найдена в справочнике"));
     }
 
     @Test
     @Tag("curAccountPath")
     public void testCurAccountPathNotFoundCur() {
-        String actual = Verification.curAccountPath(numberNotFoundCur, pathXml);
-        assertTrue(actual.contains("валюта счета не найдена в справочнике"));
+        assertTrue(Verification.curAccountPath(numberNotFoundCur, pathXml)
+                .contains("валюта счета не найдена в справочнике"));
     }
 
     @Override
